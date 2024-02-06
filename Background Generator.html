@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gradient Background Generator</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background-color: #f0f0f0;
+    }
+
+    .container {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    #backgroundPreview {
+      width: 300px;
+      height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgb(6, 4, 2);
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background: linear-gradient(to right bottom, #ff5733, #33ff57);
+      background-size: cover;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pattern-overlay {
+      background-image: url('https://subtlepatterns.com/patterns/scribble-light.png');
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.3;
+    }
+  </style>
+</head>
+<body>
+
+    <div class="background-color">
+        <h1>Background Generator</h1>
+  <div class="container">
+    <div class="controls">
+      <label for="color1">Color 1</label>
+      <input type="color" id="color1" value="#ff5733">
+
+      <label for="color2">Color 2</label>
+      <input type="color" id="color2" value="#33ff57">
+
+      <label for="gradientType">Gradient Type</label>
+      <select id="gradientType">
+        <option value="linear">Linear Gradient</option>
+        <option value="radial">Radial Gradient</option>
+      </select>
+
+      <label for="gradientDirection">Gradient Direction</label>
+      <input type="range" id="gradientDirection" min="0" max="360" value="0" step="1">
+
+      <label for="opacity">Opacity</label>
+      <input type="range" id="opacity" min="0" max="1" value="1" step="0.1">
+
+      <label for="blendMode">Blend Mode</label>
+      <select id="blendMode">
+        <option value="normal">Normal</option>
+        <option value="overlay">Overlay</option>
+        <option value="multiply">Multiply</option>
+        <option value="screen">Screen</option>
+      </select>
+    </div>
+
+    <div class="preview" id="backgroundPreview">
+      <div class="pattern-overlay"></div>
+      <p>Your Background Preview</p>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const color1Input = document.getElementById('color1');
+      const color2Input = document.getElementById('color2');
+      const gradientTypeSelect = document.getElementById('gradientType');
+      const gradientDirectionInput = document.getElementById('gradientDirection');
+      const opacityInput = document.getElementById('opacity');
+      const blendModeSelect = document.getElementById('blendMode');
+      const backgroundPreview = document.getElementById('backgroundPreview');
+
+      function updateBackground() {
+        const color1 = color1Input.value;
+        const color2 = color2Input.value;
+        const gradientType = gradientTypeSelect.value;
+        const gradientDirection = gradientDirectionInput.value;
+        const opacity = opacityInput.value;
+        const blendMode = blendModeSelect.value;
+
+        backgroundPreview.style.background =
+          gradientType === 'linear' ?
+            `linear-gradient(${gradientDirection}deg, ${color1}, ${color2})` :
+            `radial-gradient(${color1}, ${color2})`;
+
+        backgroundPreview.style.opacity = opacity;
+        backgroundPreview.style.mixBlendMode = blendMode;
+      }
+
+      color1Input.addEventListener('input', updateBackground);
+      color2Input.addEventListener('input', updateBackground);
+      gradientTypeSelect.addEventListener('change', updateBackground);
+      gradientDirectionInput.addEventListener('input', updateBackground);
+      opacityInput.addEventListener('input', updateBackground);
+      blendModeSelect.addEventListener('change', updateBackground);
+
+      // Initial background update
+      updateBackground();
+    });
+  </script>
+</body>
+</html>
